@@ -1,0 +1,32 @@
+button{
+    width: 70px;
+    height: 70px;
+    background-color: #fff;
+    border: none;
+    border-radius: 5px;
+}
+main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+.calculator-body{
+    width: 295px;
+    background-color: #d3cbcb;
+}
+.buttons{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 3px;
+    padding: 3px;
+}
+.zero{
+    width: 143px;
+}
+.color-accent{
+    background-color: orangered;
+}
+.result-container{
+    height: 100px;
+}
