@@ -1,54 +1,97 @@
-import './style.css';
-import {sum, substraction, multiply, division} from './math'
+import "./style.css";
+import { sum, substraction, multiply, division } from "./math";
 
-let operHistory = []
-let allHistory = []
+const numBoard = document.querySelector("#numBoard");
+const sequence = document.querySelector("#sequence");
+const resultPlaceholder = document.querySelector("#currentVal");
+
+const state = {
+  a: "",
+  b: "",
+  operator: "",
+  completed: false,
+};
 const OPERATIONS = {
-    sum: '+',
-    substraction: '-',
-    multiply: '*',
-    division: '/'
+  sum: "+",
+  substraction: "-",
+  multiply: "*",
+  division: "/",
+};
+const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
+const operators = ["+", "-", "*", "/"];
+
+const updateScreen = (stateObj) => {
+  const data = { ...stateObj };
+  sequence.innerText = data.a;
+  resultPlaceholder.innerText = data.b;
+};
+
+const clearData = (stateObj) => {
+  const data = { ...stateObj };
+
+  data.a = "";
+  data.b = "";
+  data.operator = "";
+  data.completed = false;
+  console.log(data);
+  return data;
+};
+
+function calculate(stateObj) {
+  const data = { ...stateObj };
+  const { a, b, operator: operation } = data;
+  switch (operation) {
+    case OPERATIONS.sum:
+      data.a = sum(+a, +b);
+      break;
+    case OPERATIONS.substraction:
+      data.a = substraction(+a, +b);
+      break;
+    case OPERATIONS.multiply:
+      data.a = multiply(a, b);
+      break;
+    case OPERATIONS.division:
+      data.a = division(a, b);
+      break;
+    default:
+      break;
+  }
+  data.completed = true;
+  console.log("calc, data", data);
+  return data;
 }
 
-const getStr = (e, arr) => {
-    const target = e.target.value
-    console.log(target)
-    const operatorsArr = ['+', '-', '*', '/']
-    if (target === '=') {
-        console.log(arr)
-        return arr
+const fillNumbers = (e, stateObj) => {
+  const data = { ...stateObj };
+  const target = e.target.value;
+
+  if (operators.includes(target)) {
+    data.operator = target;
+  }
+  if (numbers.includes(target)) {
+    if (data.b === "" && data.operator === "") {
+      data.a += target;
+      updateScreen(data);
+    } else if (data.a !== "" && data.b !== "" && data.completed) {
+      data.b = target;
+      data.completed = false;
+      updateScreen(data);
+    } else {
+      data.b += target;
+      updateScreen(data);
     }
-    operatorsArr.includes(target) ? arr.push(target) : arr.push(Number(target))
-}
-console.log(Number('+'))
-const calculate = () => {
-    const [a, operation, b] = operHistory
-    let result = null
+  }
+  if (target === "=") {
+    if (data.b === "") data.b = data.a;
+    const res = calculate(data);
+    updateScreen(res);
+  }
+  if (target === "ac") {
+    clearData(data);
+  }
 
-    switch(operation) {
-        case OPERATIONS.sum:
-            result = sum(a,b);
-            break;
-            case OPERATIONS.substraction:
-                result = substraction(a,b);
-                break;
-                case OPERATIONS.multiply:
-                    result = multiply(a,b);
-                    break;
-                    case OPERATIONS.division:
-                        result = division(a,b);
-                        break;
-    }
-    console.log(result)
-    allHistory.push(result)
-    operHistory = []
-    return result
+  console.log(data);
+  return data;
+};
 
-}
-
-
-const numBoard = document.querySelector('#numBoard')
-numBoard.addEventListener('click', (e) => {
-    getStr(e, operHistory)
-    if(e.target.value === '=') calculate()
-})
+numBoard.addEventListener("click", (e) => fillNumbers(e, state));
