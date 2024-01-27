@@ -10,6 +10,7 @@ const state = {
   b: "",
   operator: "",
   completed: false,
+  sequence: []
 };
 const OPERATIONS = {
   sum: "+",
@@ -21,9 +22,8 @@ const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
 const operators = ["+", "-", "*", "/"];
 
 const updateScreen = (stateObj) => {
-  const data = stateObj;
-  sequence.innerText = data.a;
-  resultPlaceholder.innerText = data.b;
+  sequence.value = stateObj.a;
+  resultPlaceholder.value = stateObj.b ? stateObj.b : stateObj.a;
 };
 
 const clearData = (stateObj) => {
@@ -33,9 +33,18 @@ const clearData = (stateObj) => {
   data.b = "";
   data.operator = "";
   data.completed = false;
+  data.sequence = []
   console.log(data);
+  updateScreen(data)
   return data;
 };
+const clearSequence = (stateObj) => {
+    const data = stateObj;
+    data.sequence[0] = data.a
+    data.sequence[1] = ''
+    data.sequence[2] = ''
+
+}
 
 function calculate(stateObj) {
   const data = stateObj;
@@ -57,7 +66,6 @@ function calculate(stateObj) {
       break;
   }
   data.completed = true;
-  console.log("calc, data", data);
   return data;
 }
 
@@ -67,7 +75,8 @@ const fillNumbers = (e, stateObj) => {
 
   if (operators.includes(target)) {
     data.operator = target;
-    console.log("after plus", data);
+    updateScreen(data);
+    resultPlaceholder.value = target
   }
   if (numbers.includes(target)) {
     if (data.b === "" && data.operator === "") {
@@ -81,12 +90,13 @@ const fillNumbers = (e, stateObj) => {
       data.b += target;
       updateScreen(data);
     }
-    console.log("after num", data);
+    updateScreen(data);
   }
   if (target === "=") {
     if (data.b === "") data.b = data.a;
     const res = calculate(data);
     updateScreen(res);
+    resultPlaceholder.value = ''
   }
   if (target === "ac") {
     data = clearData(data);
