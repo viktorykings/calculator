@@ -21,13 +21,13 @@ const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
 const operators = ["+", "-", "*", "/"];
 
 const updateScreen = (stateObj) => {
-  const data = { ...stateObj };
+  const data = stateObj;
   sequence.innerText = data.a;
   resultPlaceholder.innerText = data.b;
 };
 
 const clearData = (stateObj) => {
-  const data = { ...stateObj };
+  const data = stateObj;
 
   data.a = "";
   data.b = "";
@@ -38,7 +38,7 @@ const clearData = (stateObj) => {
 };
 
 function calculate(stateObj) {
-  const data = { ...stateObj };
+  const data = stateObj;
   const { a, b, operator: operation } = data;
   switch (operation) {
     case OPERATIONS.sum:
@@ -62,11 +62,12 @@ function calculate(stateObj) {
 }
 
 const fillNumbers = (e, stateObj) => {
-  const data = { ...stateObj };
+  let data = stateObj;
   const target = e.target.value;
 
   if (operators.includes(target)) {
     data.operator = target;
+    console.log("after plus", data);
   }
   if (numbers.includes(target)) {
     if (data.b === "" && data.operator === "") {
@@ -80,6 +81,7 @@ const fillNumbers = (e, stateObj) => {
       data.b += target;
       updateScreen(data);
     }
+    console.log("after num", data);
   }
   if (target === "=") {
     if (data.b === "") data.b = data.a;
@@ -87,7 +89,7 @@ const fillNumbers = (e, stateObj) => {
     updateScreen(res);
   }
   if (target === "ac") {
-    clearData(data);
+    data = clearData(data);
   }
 
   console.log(data);
