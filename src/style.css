@@ -1,9 +1,21 @@
 button{
     width: 70px;
-    height: 70px;
-    background-color: #fff;
+    height: 60px;
+    background-color: #696969;
     border: none;
-    border-radius: 5px;
+    color: azure;
+    font-size: 20px;
+    font-weight: bold;
+}
+input{
+    background: transparent;
+    font-size: 30px;
+    font-weight: bold;
+    border: none;
+    color: azure;
+    text-align: right;
+    padding: 10px 20px;
+    width: -webkit-fill-available;
 }
 main{
     display: flex;
@@ -12,20 +24,24 @@ main{
     height: 100vh;
 }
 .calculator-body{
-    width: 295px;
-    background-color: #d3cbcb;
+    width: 288px;
+    background-color: #4d4c4c;
+    border-radius: 15px;
+    box-shadow: 0 0 80px #4d4c4c;
 }
 .buttons{
     display: flex;
     flex-wrap: wrap;
-    gap: 3px;
-    padding: 3px;
+    gap: 2px;
+    padding: 1px;
+    border-radius: 0 0 19px 19px;
+    overflow: hidden;
 }
 .zero{
-    width: 143px;
+    width: 142px;
 }
 .color-accent{
-    background-color: orangered;
+    background-color: orange;
 }
 .result-container{
     height: 100px;
