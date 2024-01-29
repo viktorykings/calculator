@@ -1,10 +1,10 @@
-import "./style.css";
-import { multiply, percentage, oppositeNumber } from "./math";
-import calculate from "./calculator";
-import themeSwitchFunc from "./themeSwitch";
-import { updateScreen, clearData } from "./helpers";
-import { OPERATIONS, numbers, operators } from "./constatns";
-import { activeBtn, unactiveBtn } from "./keyboardHandlers";
+import "./styles/style.css";
+import { multiply, percentage, oppositeNumber } from "./calculator/math";
+import calculate from "./calculator/calculator";
+import themeSwitchFunc from "./calculator/themeSwitch";
+import { updateScreen, clearData } from "./calculator/helpers";
+import { OPERATIONS, numbers, operators } from "./calculator/constatns";
+import { activeBtn, unactiveBtn } from "./calculator/keyboardHandlers";
 
 const numBoard = document.querySelector("#numBoard");
 const sequence = document.querySelector("#sequence");
