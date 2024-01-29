@@ -8,6 +8,12 @@ button{
     font-weight: bold;
     cursor: pointer;
 }
+button:hover{
+    filter: brightness(1.2);
+}
+button:active{
+    filter: brightness(0.8);
+}
 input{
     background: transparent;
     font-size: 30px;
@@ -49,6 +55,10 @@ main{
     height: 20px;
     border-radius: 50%;
 }
+.theme,
+button{
+    transition: all 0.4s;
+}
 .theme-red{
     background-color: red;
 }
@@ -57,7 +67,4 @@ main{
 }
 .theme-green{
     background-color: green;
-}
-.result-container{
-    height: 100px;
 }

@@ -143,5 +143,4 @@ numBoard.addEventListener("click", (e) => fillNumbers(e, state));
 const themeSwitch = document.querySelector('#themeSwitch')
 themeSwitch.addEventListener('click', (e) => {
   state.theme = themeSwitchFunc(e, state.theme)
-  console.log(state)
 })
