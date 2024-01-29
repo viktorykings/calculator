@@ -3,7 +3,8 @@ import { multiply, percentage, oppositeNumber } from "./math";
 import {calculate} from './calculator'
 import {themeSwitchFunc} from "./themeSwitch";
 import{updateScreen, clearData} from './helpers'
-import{OPERATIONS} from './operations'
+import{OPERATIONS, numbers, operators} from './constatns'
+import{ activeBtn,unactiveBtn} from './keyboardHandlers'
 
 const numBoard = document.querySelector("#numBoard");
 const sequence = document.querySelector("#sequence");
@@ -19,13 +20,11 @@ const state = {
   theme: 'theme-orange'
 };
 
-const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
-const operators = ["+", "-", "*", "/"];
-
 
 const fillNumbers = (e, stateObj) => {
   let data = stateObj;
-  const target = e.target.value;
+  const target = e.key ? e.key : e.target.value ;
+  console.log('target', target)
   if(data.isError){
     clearData(data)
     data.isError = false
@@ -76,9 +75,10 @@ const fillNumbers = (e, stateObj) => {
       data.b += target;
     }
     updateScreen(data, resultPlaceholder);
+    console.log(data)
   }
 
-  if (target === OPERATIONS.equal) {
+  if (target === OPERATIONS.equal || target === 'Enter') {
     if (data.b === "" && data.operator) data.b = data.a;
 
     const res = calculate(data);
@@ -92,6 +92,9 @@ const fillNumbers = (e, stateObj) => {
 };
 
 numBoard.addEventListener("click", (e) => fillNumbers(e, state));
+window.addEventListener("keydown", (e) => {activeBtn(e);fillNumbers(e, state)});
+window.addEventListener("keyup", unactiveBtn);
+
 const themeSwitch = document.querySelector('#themeSwitch')
 themeSwitch.addEventListener('click', (e) => {
   state.theme = themeSwitchFunc(e, state.theme)

@@ -1,5 +1,5 @@
 import { sum, substraction, multiply, division } from "./math";
-import {OPERATIONS} from './operations';
+import {OPERATIONS} from './constatns';
 
 export function calculate(stateObj) {
     const data = stateObj;
