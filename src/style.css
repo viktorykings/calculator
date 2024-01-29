@@ -6,6 +6,7 @@ button{
     color: azure;
     font-size: 20px;
     font-weight: bold;
+    cursor: pointer;
 }
 input{
     background: transparent;
@@ -40,8 +41,22 @@ main{
 .zero{
     width: 142px;
 }
-.color-accent{
+.theme-switch{
+    padding: 5px;
+}
+.switch{
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+}
+.theme-red{
+    background-color: red;
+}
+.theme-orange{
     background-color: orange;
+}
+.theme-green{
+    background-color: green;
 }
 .result-container{
     height: 100px;

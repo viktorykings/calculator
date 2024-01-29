@@ -1,5 +1,6 @@
 import "./style.css";
 import { sum, substraction, multiply, division, percentage, oppositeNumber } from "./math";
+import {themeSwitchFunc} from "./themeSwitch";
 
 const numBoard = document.querySelector("#numBoard");
 const sequence = document.querySelector("#sequence");
@@ -11,7 +12,8 @@ const state = {
   operator: "",
   completed: false,
   sequence: [],
-  isError: false
+  isError: false,
+  theme: 'theme-orange'
 };
 const OPERATIONS = {
   sum: "+",
@@ -138,3 +140,8 @@ const fillNumbers = (e, stateObj) => {
 };
 
 numBoard.addEventListener("click", (e) => fillNumbers(e, state));
+const themeSwitch = document.querySelector('#themeSwitch')
+themeSwitch.addEventListener('click', (e) => {
+  state.theme = themeSwitchFunc(e, state.theme)
+  console.log(state)
+})
