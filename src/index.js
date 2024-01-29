@@ -1,5 +1,5 @@
 import "./style.css";
-import { sum, substraction, multiply, division } from "./math";
+import { sum, substraction, multiply, division, percentage } from "./math";
 
 const numBoard = document.querySelector("#numBoard");
 const sequence = document.querySelector("#sequence");
@@ -10,16 +10,17 @@ const state = {
   b: "",
   operator: "",
   completed: false,
-  sequence: []
+  sequence: [],
 };
 const OPERATIONS = {
   sum: "+",
   substraction: "-",
   multiply: "*",
   division: "/",
+  percentage: "%",
 };
 const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
-const operators = ["+", "-", "*", "/"];
+const operators = ["+", "-", "*", "/", "%"];
 
 const updateScreen = (stateObj) => {
   sequence.value = stateObj.a;
@@ -33,18 +34,10 @@ const clearData = (stateObj) => {
   data.b = "";
   data.operator = "";
   data.completed = false;
-  data.sequence = []
-  console.log(data);
-  updateScreen(data)
+  data.sequence = [];
+  updateScreen(data);
   return data;
 };
-const clearSequence = (stateObj) => {
-    const data = stateObj;
-    data.sequence[0] = data.a
-    data.sequence[1] = ''
-    data.sequence[2] = ''
-
-}
 
 function calculate(stateObj) {
   const data = stateObj;
@@ -73,36 +66,56 @@ const fillNumbers = (e, stateObj) => {
   let data = stateObj;
   const target = e.target.value;
 
+  if (target === OPERATIONS.percentage) {
+    if (
+      data.operator === OPERATIONS.sum ||
+      data.operator === OPERATIONS.substraction
+    ) {
+      data.b = multiply(percentage(data.b), data.a);
+    }
+    if (
+      data.operator === OPERATIONS.multiply ||
+      data.operator === OPERATIONS.division
+    )
+      data.b = percentage(data.b);
+  }
   if (operators.includes(target)) {
-    data.operator = target;
+    if (data.a && data.b) {
+      const res = calculate(data);
+      updateScreen(res);
+      data.b = "";
+    }
     updateScreen(data);
-    resultPlaceholder.value = target
+    data.operator = target;
+    resultPlaceholder.value = target;
   }
   if (numbers.includes(target)) {
     if (data.b === "" && data.operator === "") {
       data.a += target;
-      updateScreen(data);
     } else if (data.a !== "" && data.b !== "" && data.completed) {
       data.b = target;
       data.completed = false;
-      updateScreen(data);
     } else {
       data.b += target;
-      updateScreen(data);
     }
     updateScreen(data);
   }
   if (target === "=") {
-    if (data.b === "") data.b = data.a;
+    if (data.b === "" && data.operator) data.b = data.a;
     const res = calculate(data);
     updateScreen(res);
-    resultPlaceholder.value = ''
+    resultPlaceholder.value = "";
   }
+  //   if (data.b === "" && data.operator !== '') {
+  //     data.b = 0;
+  //     const res = calculate(data);
+  //     updateScreen(res);
+  //     resultPlaceholder.value = ''
+  // }
   if (target === "ac") {
     data = clearData(data);
   }
 
-  console.log(data);
   return data;
 };
 
