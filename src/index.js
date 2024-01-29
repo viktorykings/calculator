@@ -80,7 +80,8 @@ const fillNumbers = (e, stateObj) => {
     console.log(data)
     return
   }
-  if (target === OPERATIONS.percentage) {
+  if (target === OPERATIONS.percentage && data.b) {
+    console.log(data)
     resultPlaceholder.value = target;
     if (
       data.operator === OPERATIONS.sum ||
