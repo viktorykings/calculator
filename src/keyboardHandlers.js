@@ -5,13 +5,15 @@ const isTargetKey = (e) => {
     numbers.includes(e.key) ||
     operators.includes(e.key) ||
     e.key === OPERATIONS.equal ||
-    e.key === "Enter"
+    e.key === "Enter" ||
+    e.key === 'Delete'
   );
 };
 
 export function activeBtn(e) {
   let value = e.key;
   if (e.key === "Enter") value = "=";
+  if (e.key === "Delete") value = "ac";
   const btn = document.querySelector(`button[value="${value}"]`);
   if (isTargetKey(e)) {
     btn.classList.add("active");

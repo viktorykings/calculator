@@ -21,9 +21,7 @@ const state = {
 const fillNumbers = (e, stateObj) => {
   let data = stateObj;
   const target = e.key ? e.key : e.target.value;
-  console.log("target", target);
   if (target === OPERATIONS.percentage && data.b) {
-    console.log(data);
     resultPlaceholder.value = target;
     if (
       data.operator === OPERATIONS.sum ||
@@ -44,8 +42,15 @@ const fillNumbers = (e, stateObj) => {
     updateScreen(data, resultPlaceholder, sequence);
   }
 
-  if (operators.includes(target)) {
+  if (operators.includes(target) || target === OPERATIONS.equal){
     if(!data.a) return
+    if(data.a === 'Error') {
+      clearData(data, sequence, resultPlaceholder)
+      return;
+    }
+  }
+
+  if (operators.includes(target)) {
     if (data.a && data.b && !data.completed) {
       const res = calculate(data);
       updateScreen(res, resultPlaceholder, sequence);
@@ -55,11 +60,14 @@ const fillNumbers = (e, stateObj) => {
     updateScreen(data, resultPlaceholder, sequence);
     data.operator = target;
     resultPlaceholder.value = target;
-    console.log(data)
   }
 
   if (numbers.includes(target)) {
     if (data.b === "" && data.operator === "") {
+      if(target === '0') data.a = '0';
+      if(data.a === '0' && target !== '.') {
+        data.a = '';
+      }
       data.a += target;
     } else if (data.a !== "" && data.b !== "" && data.completed) {
       data.b = target;
@@ -68,7 +76,6 @@ const fillNumbers = (e, stateObj) => {
       data.b += target;
     }
     updateScreen(data, resultPlaceholder, sequence);
-    console.log(data);
   }
 
   if (target === OPERATIONS.equal || target === "Enter") {
@@ -78,7 +85,7 @@ const fillNumbers = (e, stateObj) => {
     updateScreen(res, resultPlaceholder, sequence);
     resultPlaceholder.value = "";
   }
-  if (target === OPERATIONS.ac) {
+  if (target === OPERATIONS.ac || target === 'Delete') {
     data = clearData(data, resultPlaceholder, sequence);
   }
 };
