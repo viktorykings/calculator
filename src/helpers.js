@@ -1,16 +1,20 @@
-export const updateScreen = (stateObj, placeholder) => {
-    sequence.value = stateObj.a;
-    placeholder.value = stateObj.b ? stateObj.b : stateObj.a;
-  };
-  
-export const clearData = (stateObj, placeholder) => {
-    const data = stateObj;
-  
-    data.a = "";
-    data.b = "";
-    data.operator = "";
-    data.completed = false;
-    data.sequence = [];
-    updateScreen(data, placeholder);
-    return data;
-  };
+export const updateScreen = (stateObj, val, seq) => {
+  const sequence = seq;
+  const placeholder = val;
+  // data.sequence = data.a;
+  // data.currentValue = stateObj.b ? stateObj.b : stateObj.a;
+  sequence.value = stateObj.a;
+  placeholder.value = stateObj.b ? stateObj.b : stateObj.a;
+};
+
+export const clearData = (stateObj, placeholder, seq) => {
+  const data = stateObj;
+
+  data.a = "";
+  data.b = "";
+  data.operator = "";
+  data.completed = false;
+  data.sequence = [];
+  updateScreen(data, placeholder, seq);
+  return data;
+};

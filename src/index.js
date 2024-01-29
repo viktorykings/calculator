@@ -1,10 +1,10 @@
 import "./style.css";
 import { multiply, percentage, oppositeNumber } from "./math";
-import {calculate} from './calculator'
-import {themeSwitchFunc} from "./themeSwitch";
-import{updateScreen, clearData} from './helpers'
-import{OPERATIONS, numbers, operators} from './constatns'
-import{ activeBtn,unactiveBtn} from './keyboardHandlers'
+import calculate from "./calculator";
+import themeSwitchFunc from "./themeSwitch";
+import { updateScreen, clearData } from "./helpers";
+import { OPERATIONS, numbers, operators } from "./constatns";
+import { activeBtn, unactiveBtn } from "./keyboardHandlers";
 
 const numBoard = document.querySelector("#numBoard");
 const sequence = document.querySelector("#sequence");
@@ -15,24 +15,24 @@ const state = {
   b: "",
   operator: "",
   completed: false,
-  sequence: [],
+  sequence: "",
+  currentValue: "",
   isError: false,
-  theme: 'theme-orange'
+  theme: "theme-orange",
 };
-
 
 const fillNumbers = (e, stateObj) => {
   let data = stateObj;
-  const target = e.key ? e.key : e.target.value ;
-  console.log('target', target)
-  if(data.isError){
-    clearData(data)
-    data.isError = false
-    console.log(data)
-    return
+  const target = e.key ? e.key : e.target.value;
+  console.log("target", target);
+  if (data.isError) {
+    clearData(data);
+    data.isError = false;
+    console.log(data);
+    return;
   }
   if (target === OPERATIONS.percentage && data.b) {
-    console.log(data)
+    console.log(data);
     resultPlaceholder.value = target;
     if (
       data.operator === OPERATIONS.sum ||
@@ -47,22 +47,24 @@ const fillNumbers = (e, stateObj) => {
       data.b = percentage(data.b);
   }
 
-  if(target === OPERATIONS.oppositeSign){
-    data.b = ''
-    if(data.a) data.a = oppositeNumber(data.a)
-    updateScreen(data, resultPlaceholder)
+  if (target === OPERATIONS.oppositeSign) {
+    data.b = "";
+    if (data.a) data.a = oppositeNumber(data.a);
+    updateScreen(data, resultPlaceholder, sequence);
   }
 
   if (operators.includes(target)) {
+    if(!data.a) return
     if (data.a && data.b && !data.completed) {
       const res = calculate(data);
-      updateScreen(res, resultPlaceholder);
+      updateScreen(res, resultPlaceholder, sequence);
       data.b = "";
       data.completed = false;
     }
-    updateScreen(data, resultPlaceholder)
+    updateScreen(data, resultPlaceholder, sequence);
     data.operator = target;
     resultPlaceholder.value = target;
+    console.log(data)
   }
 
   if (numbers.includes(target)) {
@@ -74,28 +76,30 @@ const fillNumbers = (e, stateObj) => {
     } else {
       data.b += target;
     }
-    updateScreen(data, resultPlaceholder);
-    console.log(data)
+    updateScreen(data, resultPlaceholder, sequence);
+    console.log(data);
   }
 
-  if (target === OPERATIONS.equal || target === 'Enter') {
+  if (target === OPERATIONS.equal || target === "Enter") {
     if (data.b === "" && data.operator) data.b = data.a;
 
     const res = calculate(data);
-    updateScreen(res, resultPlaceholder);
+    updateScreen(res, resultPlaceholder, sequence);
     resultPlaceholder.value = "";
   }
   if (target === OPERATIONS.ac) {
-    data = clearData(data, resultPlaceholder);
+    data = clearData(data, resultPlaceholder, sequence);
   }
-  return data;
 };
 
 numBoard.addEventListener("click", (e) => fillNumbers(e, state));
-window.addEventListener("keydown", (e) => {activeBtn(e);fillNumbers(e, state)});
+window.addEventListener("keydown", (e) => {
+  activeBtn(e);
+  fillNumbers(e, state);
+});
 window.addEventListener("keyup", unactiveBtn);
 
-const themeSwitch = document.querySelector('#themeSwitch')
-themeSwitch.addEventListener('click', (e) => {
-  state.theme = themeSwitchFunc(e, state.theme)
-})
+const themeSwitch = document.querySelector("#themeSwitch");
+themeSwitch.addEventListener("click", (e) => {
+  state.theme = themeSwitchFunc(e, state.theme);
+});
