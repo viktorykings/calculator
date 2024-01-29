@@ -60,6 +60,9 @@ function calculate(stateObj) {
       break;
     case OPERATIONS.division:
       data.a = division(a, b);
+      if(data.a === Infinity) {
+        
+      }
       break;
     default:
       break;
@@ -124,11 +127,7 @@ const fillNumbers = (e, stateObj) => {
 
   if (target === OPERATIONS.equal) {
     if (data.b === "" && data.operator) data.b = data.a;
-    if(data.b.replace('.', '') == 0) {
-      resultPlaceholder.value = 'Error'
-      data.isError = true;
-      return;
-    }
+
     const res = calculate(data);
     updateScreen(res);
     resultPlaceholder.value = "";
