@@ -15,9 +15,6 @@ const state = {
   b: "",
   operator: "",
   completed: false,
-  sequence: "",
-  currentValue: "",
-  isError: false,
   theme: "theme-orange",
 };
 
@@ -25,12 +22,6 @@ const fillNumbers = (e, stateObj) => {
   let data = stateObj;
   const target = e.key ? e.key : e.target.value;
   console.log("target", target);
-  if (data.isError) {
-    clearData(data);
-    data.isError = false;
-    console.log(data);
-    return;
-  }
   if (target === OPERATIONS.percentage && data.b) {
     console.log(data);
     resultPlaceholder.value = target;
