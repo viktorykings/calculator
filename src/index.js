@@ -1,12 +1,5 @@
 import "./style.css";
-import {
-  sum,
-  substraction,
-  multiply,
-  division,
-  percentage,
-  oppositeNumber,
-} from "./math";
+import { sum, substraction, multiply, division, percentage, oppositeNumber } from "./math";
 
 const numBoard = document.querySelector("#numBoard");
 const sequence = document.querySelector("#sequence");
@@ -18,6 +11,7 @@ const state = {
   operator: "",
   completed: false,
   sequence: [],
+  isError: false
 };
 const OPERATIONS = {
   sum: "+",
@@ -25,9 +19,9 @@ const OPERATIONS = {
   multiply: "*",
   division: "/",
   percentage: "%",
-  ac: "ac",
-  oppositeSign: "oppositeSign",
-  equal: "=",
+  ac: 'ac',
+  oppositeSign: 'oppositeSign',
+  equal: '='
 };
 const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
 const operators = ["+", "-", "*", "/"];
@@ -75,6 +69,12 @@ function calculate(stateObj) {
 const fillNumbers = (e, stateObj) => {
   let data = stateObj;
   const target = e.target.value;
+  if(data.isError){
+    clearData(data)
+    data.isError = false
+    console.log(data)
+    return
+  }
   if (target === OPERATIONS.percentage) {
     resultPlaceholder.value = target;
     if (
@@ -90,10 +90,10 @@ const fillNumbers = (e, stateObj) => {
       data.b = percentage(data.b);
   }
 
-  if (target === OPERATIONS.oppositeSign) {
-    data.b = "";
-    if (data.a) data.a = oppositeNumber(data.a);
-    updateScreen(data);
+  if(target === OPERATIONS.oppositeSign){
+    data.b = ''
+    if(data.a) data.a = oppositeNumber(data.a)
+    updateScreen(data)
   }
 
   if (operators.includes(target)) {
@@ -103,7 +103,7 @@ const fillNumbers = (e, stateObj) => {
       data.b = "";
       data.completed = false;
     }
-    updateScreen(data);
+    updateScreen(data)
     data.operator = target;
     resultPlaceholder.value = target;
   }
@@ -122,11 +122,15 @@ const fillNumbers = (e, stateObj) => {
 
   if (target === OPERATIONS.equal) {
     if (data.b === "" && data.operator) data.b = data.a;
+    if(data.b.replace('.', '') == 0) {
+      resultPlaceholder.value = 'Error'
+      data.isError = true;
+      return;
+    }
     const res = calculate(data);
     updateScreen(res);
     resultPlaceholder.value = "";
   }
-
   if (target === OPERATIONS.ac) {
     data = clearData(data);
   }
