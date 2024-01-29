@@ -1,5 +1,6 @@
-export const sum = (a, b) => a + b;
-export const substraction = (a, b) => a - b;
-export const multiply = (a, b) => a * b;
-export const division = (a, b) => (a / b).toFixed(8);
-export const percentage = (a) => a / 100;
+export const sum = (a, b) => parseFloat(a) + parseFloat(b);
+export const substraction = (a, b) => parseFloat(a) - parseFloat(b);
+export const multiply = (a, b) => parseFloat(a) * parseFloat(b);
+export const division = (a, b) => parseFloat(a) / parseFloat(b);
+export const percentage = (a) => parseFloat(a) / 100;
+export const oppositeNumber = (a) => parseFloat(a) * -1;
