@@ -1,6 +1,9 @@
 import "./style.css";
-import { sum, substraction, multiply, division, percentage, oppositeNumber } from "./math";
+import { multiply, percentage, oppositeNumber } from "./math";
+import {calculate} from './calculator'
 import {themeSwitchFunc} from "./themeSwitch";
+import{updateScreen, clearData} from './helpers'
+import{OPERATIONS} from './operations'
 
 const numBoard = document.querySelector("#numBoard");
 const sequence = document.querySelector("#sequence");
@@ -15,61 +18,10 @@ const state = {
   isError: false,
   theme: 'theme-orange'
 };
-const OPERATIONS = {
-  sum: "+",
-  substraction: "-",
-  multiply: "*",
-  division: "/",
-  percentage: "%",
-  ac: 'ac',
-  oppositeSign: 'oppositeSign',
-  equal: '='
-};
+
 const numbers = ["0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "."];
 const operators = ["+", "-", "*", "/"];
 
-const updateScreen = (stateObj) => {
-  sequence.value = stateObj.a;
-  resultPlaceholder.value = stateObj.b ? stateObj.b : stateObj.a;
-};
-
-const clearData = (stateObj) => {
-  const data = stateObj;
-
-  data.a = "";
-  data.b = "";
-  data.operator = "";
-  data.completed = false;
-  data.sequence = [];
-  updateScreen(data);
-  return data;
-};
-
-function calculate(stateObj) {
-  const data = stateObj;
-  const { a, b, operator: operation } = data;
-  switch (operation) {
-    case OPERATIONS.sum:
-      data.a = sum(a, b);
-      break;
-    case OPERATIONS.substraction:
-      data.a = substraction(a, b);
-      break;
-    case OPERATIONS.multiply:
-      data.a = multiply(a, b);
-      break;
-    case OPERATIONS.division:
-      data.a = division(a, b);
-      if(data.a === Infinity) {
-        
-      }
-      break;
-    default:
-      break;
-  }
-  data.completed = true;
-  return data;
-}
 
 const fillNumbers = (e, stateObj) => {
   let data = stateObj;
@@ -99,17 +51,17 @@ const fillNumbers = (e, stateObj) => {
   if(target === OPERATIONS.oppositeSign){
     data.b = ''
     if(data.a) data.a = oppositeNumber(data.a)
-    updateScreen(data)
+    updateScreen(data, resultPlaceholder)
   }
 
   if (operators.includes(target)) {
     if (data.a && data.b && !data.completed) {
       const res = calculate(data);
-      updateScreen(res);
+      updateScreen(res, resultPlaceholder);
       data.b = "";
       data.completed = false;
     }
-    updateScreen(data)
+    updateScreen(data, resultPlaceholder)
     data.operator = target;
     resultPlaceholder.value = target;
   }
@@ -123,18 +75,18 @@ const fillNumbers = (e, stateObj) => {
     } else {
       data.b += target;
     }
-    updateScreen(data);
+    updateScreen(data, resultPlaceholder);
   }
 
   if (target === OPERATIONS.equal) {
     if (data.b === "" && data.operator) data.b = data.a;
 
     const res = calculate(data);
-    updateScreen(res);
+    updateScreen(res, resultPlaceholder);
     resultPlaceholder.value = "";
   }
   if (target === OPERATIONS.ac) {
-    data = clearData(data);
+    data = clearData(data, resultPlaceholder);
   }
   return data;
 };
